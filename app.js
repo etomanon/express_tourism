@@ -24,7 +24,7 @@ var username = "postgres" // sandbox username
 var password = "postgres" // read only privileges on our table
 var host = "localhost:5432"
 var database = "spatial" // database name
-var conString1 = "postgres://" + username + ":" + password + "@" + host + "/" + database; // Your Database Connection
+var conString1 = process.env.DATABASE_URL || "postgres://" + username + ":" + password + "@" + host + "/" + database; // Your Database Connection
 
 
 // uncomment after placing your favicon in /public
