@@ -1,0 +1,69 @@
+<!-- views/pages/about.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="World tourist map, search for tourist attractions all around world!">
+    <meta name="keywords" content="map,tourist,tourism,attraction,trip,museum,artwork,zoo,viewpoint,gallery,where,route,nearest,closest">
+    <meta name="author" content="JS">
+    <title>World Tourist Map</title>
+    <link rel="icon" type="image/png" href="images/attraction.png" />
+    <link href="/styles/style.css" rel="stylesheet" type="text/css">
+    <link rel='stylesheet' href='/styles/leaflet.css' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/js/geosearch.js"></script>
+    <script src="/js/jquery.rateyo.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+    <link href="/styles/style.css" rel="stylesheet" type="text/css">
+    <link href="/styles/jquery.rateyo.min.css" rel="stylesheet" type="text/css">
+    <link href="/styles/MarkerCluster.Default.css" rel="stylesheet" type="text/css">
+    <link href="/styles/MarkerCluster.css" rel="stylesheet" type="text/css">
+    <link href="/styles/geosearch.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class='global-wrapper'>
+        <div id="map"></div>
+
+        <div class='loading'></div>
+
+        <div class="show-menu">Menu</div>
+        <div class='menu menu-right'>
+          <div class='menu-wrapper'>
+            <h3>Filter</h3>
+            <div class='checkbox-wrapper'>
+              <input type="checkbox" checked name="select-all" id="select-all" class="regular-checkbox" />
+              <label for="select-all">Show all</label>
+              <hr>
+              <div class='check-sub'>
+              <%
+              var nameArray = ['Artwork', 'Attraction', 'Picnic site', 'Theme park', 'Viewpoint', 'Hunting lodge', 'Gallery', 'Zoo', 'Wilderness hut', 'Museum', 'Other']
+              var typeArray = ['artwork', 'attraction', 'picnic_site', 'theme_park', 'viewpoint', 'hunting_lodge', 'gallery', 'zoo', 'wilderness_hut', 'museum', 'yes']
+              for(var i=0; i<typeArray.length; i++) {%>
+                 <input type='checkbox' checked id='<%= typeArray[i] %>' name='filterData' class='regular-checkbox type-check' />
+                 <label for="<%= typeArray[i] %>"><%= nameArray[i] %></label>
+                 <img alt='<%= nameArray[i] %>' title='<%= nameArray[i] %>' src='images/<%= typeArray[i] %>.png' class='image-legend'>
+                 <br>
+              <% } %>
+              <hr>
+              <input type='checkbox' checked id='ratedBy' name='filterData' class='regular-checkbox' />
+              <label for="ratedBy">Already rated by you</label>
+              <br>
+              <input type='checkbox' id='ratedOnly' name='filterData' class='regular-checkbox' />
+              <label for="ratedOnly">Only rated by you</label>
+            </div>
+          	</div>
+          </div>
+        </div>
+        <div class='load-new'>SEARCH THIS AREA</div>
+
+
+</div>
+<script src="/js/leaflet.markercluster.js"></script>
+<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
+
+<script src="/js/map.js"></script>
+</body>
+</html>
