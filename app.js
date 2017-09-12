@@ -49,7 +49,8 @@ app.use(session({
   },
   secure: true
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/public'));
+//app.use(express.static(path.join(__dirname, 'public')));
 //app.use(expressValidator());
 app.use('/', index);
 app.use('/users', users);
