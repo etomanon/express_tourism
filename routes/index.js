@@ -9,7 +9,7 @@ var username = "postgres" // sandbox username
 var password = "postgres" // read only privileges on our table
 var host = "localhost:5432"
 var database = "spatial" // database name
-var conString1 = process.env.DATABASE_URL || "postgres://" + username + ":" + password + "@" + host + "/" + database; // Your Database Connection
+var conString = process.env.DATABASE_URL || "postgres://" + username + ":" + password + "@" + host + "/" + database; // Your Database Connection
 
 // Set up your database query to display GeoJSON
 var tourism_query = "SELECT row_to_json(fc) FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features FROM (SELECT 'Feature' As type, ST_AsGeoJSON(lg.geom)::json As geometry, row_to_json(row(osm_id, (SELECT CAST(AVG(rate) AS INT) FROM ratings_tourism As Rat WHERE Rat.tourism_id = lg.osm_id), name, tourism)) As properties FROM tourism As lg WHERE lg.tourism NOT IN ('guest_house', 'information', 'hotel', 'hostel', 'motel', 'chalet', 'caravan_site', 'camp_site', 'apartment', 'alpine_hut') LIMIT 100) As f) As fc";
