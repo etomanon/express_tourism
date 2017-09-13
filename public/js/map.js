@@ -313,6 +313,7 @@ function addDataMap(mapData) {
 
 
   layer1.on('click', function(e) { // The .on method attaches an event handler
+    console.log(e.layer.properties)
     L.popup({minWidth: 300, centerPop: true})
       .setContent("Name: " + getName(e.layer.feature.properties.f3) + "<br>Type: " + getType(e.layer.feature.properties.f4) + "<br><br><h3 style='margin: auto; text-align: center'><br>CURRENT RATING (<span class='numRate'></span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) +"</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
       .setLatLng(e.latlng)
