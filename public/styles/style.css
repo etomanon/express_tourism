@@ -260,9 +260,9 @@ hr {
 }
 
 
-leaflet-control-layers-toggle {
-  width: 30px !important;
-  height: 30px !important;
+.leaflet-control-layers-toggle {
+  width: 32px !important;
+  height: 32px !important;
   background-size: 20px 20px !important;
 }
 
