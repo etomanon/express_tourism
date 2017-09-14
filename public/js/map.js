@@ -536,7 +536,7 @@ $('#ratedOnly').click(function(event) {
       clearTimeout(tapped); //stop single tap callback
       tapped=null
       //insert things you want to do when double tapped
-      map.zoomIn(2)
+      map.zoomIn(1)
     }
     //e.preventDefault()
 });
