@@ -523,6 +523,23 @@ $('#ratedOnly').click(function(event) {
     $('.load-new').css({'zIndex': '9999'})
   })
   })
+
+
+  var tapped=false
+  $("#map").on("touchstart",function(e){
+    if(!tapped){ //if tap is not set, set up single tap
+      tapped=setTimeout(function(){
+          tapped=null
+          //insert things you want to do when single tapped
+      },300);   //wait 300ms then run single click code
+    } else {    //tapped within 300ms of last tap. double tap
+      clearTimeout(tapped); //stop single tap callback
+      tapped=null
+      //insert things you want to do when double tapped
+      map.zoomIn(2)
+    }
+    e.preventDefault()
+});
 });
 
 
