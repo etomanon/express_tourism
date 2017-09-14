@@ -226,7 +226,7 @@ function found(e) {
     icon: myIcon1
   }).addTo(map).bindPopup("Your position!<br><br><span class='zoom-button' onclick='zoomIn(" + e.coords.latitude + "," + e.coords.longitude + ");'>Zoom in!</span>");
   you.openPopup()
-  map.setView(swap1, 16);
+  //map.setView(swap1, 16);
 
   var near = turf.nearest(point, mapData);
   var swap = [near.geometry.coordinates[1], near.geometry.coordinates[0]]
@@ -236,11 +236,7 @@ function found(e) {
   function spacedNum(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
-
-  setTimeout(function() {
-    map.fitBounds([swap1, swap]);
-  }, 1750);
-
+  map.fitBounds([swap1, swap]);
 })}
 
 var geoOptions = {
