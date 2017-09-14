@@ -240,9 +240,6 @@ function found(e) {
   setTimeout(function() {
     map.fitBounds([swap1, swap]);
   }, 1750);
-  setTimeout(function() {
-    map.setZoom(map.getZoom() - 2)
-  }, 2000);
 
 })}
 
@@ -538,8 +535,8 @@ $('#ratedOnly').click(function(event) {
       //insert things you want to do when double tapped
       map.zoomIn(1)
     }
-    //e.preventDefault()
 });
+
 });
 
 
