@@ -538,7 +538,7 @@ $('#ratedOnly').click(function(event) {
       //insert things you want to do when double tapped
       map.zoomIn(2)
     }
-    e.preventDefault()
+    //e.preventDefault()
 });
 });
 
