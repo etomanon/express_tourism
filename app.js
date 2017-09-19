@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var validator = require('express-validator');
 var index = require('./routes/index');
-var users = require('./routes/users');
 var compression = require('compression');
 var helmet = require('helmet');
 
@@ -27,8 +26,6 @@ var database = "spatial" // database name
 var conString1 = process.env.DATABASE_URL || "postgres://" + username + ":" + password + "@" + host + "/" + database; // Your Database Connection
 
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'images/toilet.png')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -50,10 +47,7 @@ app.use(session({
   secure: true
 }));
 app.use(express.static(__dirname + '/public'));
-//app.use(express.static(path.join(__dirname, 'public')));
-//app.use(expressValidator());
 app.use('/', index);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

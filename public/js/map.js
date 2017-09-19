@@ -5,10 +5,16 @@ var nameArray2 = ['Artwork', 'Attraction', 'Picnic site', 'Theme park', 'Viewpoi
 var typeArray2 = ['artwork', 'attraction', 'picnic_site', 'theme_park', 'viewpoint', 'hunting_lodge', 'gallery', 'zoo', 'wilderness_hut', 'museum', 'yes']
 
 
-$( ".show-menu" ).click(function() {
-  $( "#map" ).toggleClass('map-move')
-  $( ".menu" ).toggleClass('menu-active')
-  $( ".show-menu" ).toggleClass('show-active')
+$(".show-menu").click(function () {
+  $("#map").toggleClass('map-move')
+  $(".menu-right").toggleClass('menu-active')
+  $(".show-menu").toggleClass('show-active')
+});
+
+
+$(".close-menu").click(function () {
+  $("#map").toggleClass('map-move')
+  $(".menu-left").toggleClass('menu-active')
 });
 
 var myIcon = L.icon({
@@ -64,22 +70,22 @@ function getRed(val) {
 }
 
 function getColor(val) {
-  if(val == 0) {
+  if (val == 0) {
     return '#000'
   }
-  else if(val == 1) {
+  else if (val == 1) {
     return '#d7191c'
   }
-  else if(val == 2) {
+  else if (val == 2) {
     return '#fdae61'
   }
-  else if(val == 3) {
+  else if (val == 3) {
     return '#ffffbf'
   }
-  else if(val == 4) {
+  else if (val == 4) {
     return '#abd9e9'
   }
-  else if(val == 5) {
+  else if (val == 5) {
     return '#2c7bb6'
   }
   else {
@@ -95,22 +101,22 @@ var map = L.map('map', {
 });
 // Add OpenStreetMap tile layer to map element
 var carto1 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-	attribution: '&copy; <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a target="_blank" href="http://carto.com/attributions">Carto</a>',
-	subdomains: 'abcd',
-	maxZoom: 19
+  attribution: '&copy; <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a target="_blank" href="http://carto.com/attributions">Carto</a>',
+  subdomains: 'abcd',
+  maxZoom: 19
 });
 
 var carto2 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
-	attribution: '&copy; <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a target="_blank" href="http://carto.com/attributions">Carto</a>',
-	subdomains: 'abcd',
-	maxZoom: 19
+  attribution: '&copy; <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a target="_blank" href="http://carto.com/attributions">Carto</a>',
+  subdomains: 'abcd',
+  maxZoom: 19
 });
 
 var baseLayers = {
-    "Light Carto": carto1,
-    "Dark Carto": carto2
+  "Light Carto": carto1,
+  "Dark Carto": carto2
 };
-L.control.layers(baseLayers,null,{position: 'topleft'}).addTo(map);
+L.control.layers(baseLayers, null, { position: 'topleft' }).addTo(map);
 
 carto1.addTo(map)
 
@@ -131,7 +137,7 @@ const searchControl = new window.GeoSearch.GeoSearchControl({
 
 map.addControl(searchControl);
 
-var locateMe =  L.Control.extend({
+var locateMe = L.Control.extend({
 
   options: {
     position: 'bottomleft'
@@ -140,7 +146,7 @@ var locateMe =  L.Control.extend({
   onAdd: function (map) {
     container4 = L.DomUtil.create('div', 'leaflet-control-custom');
 
-	container4.innerHTML = '<img title="Find me!" src="images/gps.png" style="width: auto; height: 100%; cursor: pointer" onclick="locateMe1();" />';
+    container4.innerHTML = '<img title="Find me!" src="images/gps.png" style="width: auto; height: 100%; cursor: pointer" onclick="locateMe1();" />';
 
     container4.style.width = '35px';
     container4.style.height = '35px';
@@ -153,17 +159,17 @@ var locateMe =  L.Control.extend({
 map.addControl(new locateMe());
 
 function locateMe1() {
-  $( ".loading" ).removeClass('loading-hide')
+  $(".loading").removeClass('loading-hide')
   var geoOptions1 = {
     enableHighAccuracy: true,
-    timeout: 10000,
+    timeout: 15000,
     maximumAge: 0
   };
 
   window.navigator.geolocation.getCurrentPosition(found, error, geoOptions1);
 }
 
-var extent =  L.Control.extend({
+var extent = L.Control.extend({
 
   options: {
     position: 'bottomleft'
@@ -172,7 +178,7 @@ var extent =  L.Control.extend({
   onAdd: function (map) {
     container2 = L.DomUtil.create('div', 'leaflet-control-custom');
 
-	container2.innerHTML = '<img title="Zoom out to full extent!" src="images/extent.png" style="width: auto; height: 100%; cursor: pointer" onclick="extent1();" />';
+    container2.innerHTML = '<img title="Zoom out to full extent!" src="images/extent.png" style="width: auto; height: 100%; cursor: pointer" onclick="extent1();" />';
 
     container2.style.width = '35px';
     container2.style.height = '35px';
@@ -188,8 +194,8 @@ function extent1() {
 }
 
 function onMove() {
-  if(gj.getBounds().isValid()) {
-    if(gj.getBounds().pad(-0.1).contains(map.getCenter())) {
+  if (gj.getBounds().isValid()) {
+    if (gj.getBounds().pad(-0.1).contains(map.getCenter())) {
       $('.load-new').removeClass('show-class')
     }
     else {
@@ -198,17 +204,6 @@ function onMove() {
   }
 }
 
-var point = {
-  "type": "Feature",
-  "properties": {
-    "marker-color": "#0f0"
-  },
-  "geometry": {
-    "type": "Point",
-    "coordinates": [0, 0]
-  }
-};
-
 var myLocation = {}
 function found(e) {
 
@@ -216,39 +211,30 @@ function found(e) {
     long: e.coords.longitude,
     lat: e.coords.latitude
   };
-  $.get('/data', myLocation, function(data) {
-  $( ".loading" ).addClass('loading-hide')
-  mapData = data
-  addDataMap(mapData)
-  point.geometry.coordinates = [e.coords.longitude, e.coords.latitude]
-  var swap1 = [point.geometry.coordinates[1], point.geometry.coordinates[0]]
-  var you = L.marker(swap1, {
-    icon: myIcon1
-  }).addTo(map).bindPopup("Your position!<br><br><span class='zoom-button' onclick='zoomIn(" + e.coords.latitude + "," + e.coords.longitude + ");'>Zoom in!</span>");
-  you.openPopup()
-  //map.setView(swap1, 16);
-
-  var near = turf.nearest(point, mapData);
-  var swap = [near.geometry.coordinates[1], near.geometry.coordinates[0]]
-
-
-  var distance = Math.round(turf.distance(point, near) * 1000);
-  function spacedNum(x) {
-      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-  }
-  map.fitBounds([swap1, swap]);
-})}
+  $.get('/data', myLocation, function (data) {
+    $(".loading").addClass('loading-hide')
+    mapData = data
+    addDataMap(mapData)
+    var swap1 = [e.coords.latitude, e.coords.longitude]
+    var you = L.marker(swap1, {
+      icon: myIcon1
+    }).addTo(map).bindPopup("Your position!<br><br><span class='zoom-button' onclick='zoomIn(" + e.coords.latitude + "," + e.coords.longitude + ");'>Zoom in!</span>");
+    you.openPopup()
+    console.log('setView')
+    console.log(swap1)
+    map.setView(swap1, 15);
+  })
+}
 
 var geoOptions = {
   enableHighAccuracy: false,
-  timeout: 5000,
+  timeout: 20000,
   maximumAge: 0
 };
 
 function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-  alert('We could not locate you!')
-  $( ".loading" ).addClass('loading-hide')
+  alert('ERROR(' + err.code + '): ' + err.message);
+  $(".loading").addClass('loading-hide')
   $('.load-new').addClass('show-class')
 };
 
@@ -258,70 +244,77 @@ navigator.geolocation.getCurrentPosition(found, error, geoOptions);
 
 function styleOptions(prop) {
   return {
-  radius: 10,
-  fillColor: getColor(prop),
-  color: "#808080",
-  weight: 1,
-  opacity: 1,
-  fill: true,
-  fillOpacity: 1
-}
+    radius: 10,
+    fillColor: getColor(prop),
+    color: "#808080",
+    weight: 1,
+    opacity: 1,
+    fill: true,
+    fillOpacity: 1
+  }
 }
 var gj
 var ratedMe = false
 var ratedOnly = false
-var notIncluded = ['ratedMe','ratedOnly','guest_house', 'information', 'hotel', 'hostel', 'motel', 'chalet', 'caravan_site', 'camp_site', 'apartment', 'alpine_hut']
+var notIncluded = ['ratedMe', 'ratedOnly', 'guest_house', 'information', 'hotel', 'hostel', 'motel', 'chalet', 'caravan_site', 'camp_site', 'apartment', 'alpine_hut']
 var typeArray = ['artwork', 'attraction', 'picnic_site', 'theme_park', 'viewpoint', 'yes', 'hunting_lodge', 'gallery', 'zoo', 'wilderness_hut', 'museum']
 // Add JSON to map
 function addDataMap(mapData) {
   gj = L.geoJson(mapData, {
-  pointToLayer: function (feature, latlng) {
-    if(typeArray.indexOf(feature.properties.f4) > -1) {
-      return getIcon(latlng, 'images/' + feature.properties.f4 + '.png')
-    }
+    pointToLayer: function (feature, latlng) {
+      if (typeArray.indexOf(feature.properties.f4) > -1) {
+        return getIcon(latlng, 'images/' + feature.properties.f4 + '.png')
+      }
       else {
-      //return L.circleMarker(latlng, styleOptions(feature.properties.f2));
-      return getIcon(latlng, 'images/yes.png')
-    }
+        //return L.circleMarker(latlng, styleOptions(feature.properties.f2));
+        return getIcon(latlng, 'images/yes.png')
+      }
 
-  },
-  filter: function(feature, layer) {
-		if(ratedOnly && feature.properties.f5 == null) {return false}
-    else if(notIncluded.indexOf(feature.properties.f4) > -1) { return false}
-    else if(ratedOnly && feature.properties.f5 == true) {return true}
-    else if(ratedMe && feature.properties.f5 == true) {return false}
-		else if(typeArray.indexOf(feature.properties.f4) > -1) {return true}
-    else {return false}
+    },
+    filter: function (feature, layer) {
+      if (ratedOnly && feature.properties.f5 == null) { return false }
+      else if (notIncluded.indexOf(feature.properties.f4) > -1) { return false }
+      else if (ratedOnly && feature.properties.f5 == true) { return true }
+      else if (ratedMe && feature.properties.f5 == true) { return false }
+      else if (typeArray.indexOf(feature.properties.f4) > -1) { return true }
+      else { return false }
     }
 
   });
-  if(gj.getBounds().isValid()) {
-    if(!(map.getBounds().intersects(gj.getBounds()))) {
+  if (gj.getBounds().isValid()) {
+    if (!(map.getBounds().intersects(gj.getBounds()))) {
       map.fitBounds(gj.getBounds())
     }
   }
-  layer1 = L.markerClusterGroup({showCoverageOnHover: true});
+  layer1 = L.markerClusterGroup({ showCoverageOnHover: true });
   layer1.addLayer(gj);
   map.addLayer(layer1);
   map.on('move', onMove)
 
 
-  layer1.on('click', function(e) { // The .on method attaches an event handler
-    L.popup({minWidth: 300, centerPop: true})
-      .setContent("Name: " + getName(e.layer.feature.properties.f3) + "<br>Type: " + getType(e.layer.feature.properties.f4) + "<br><br><h3 style='margin: auto; text-align: center'><br>CURRENT RATING (<span class='numRate'></span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) +"</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
-      .setLatLng(e.latlng)
-      .openOn(map);
-    //L.DomEvent.stop(e);
+  layer1.on('click', function (e) { 
+
+    // L.popup({ minWidth: 300, centerPop: true })
+    //   .setContent("Name: " + getName(e.layer.feature.properties.f3) + "<br>Type: " + getType(e.layer.feature.properties.f4) + "<br><br><h3 style='margin: auto; text-align: center'><br>CURRENT RATING (<span class='numRate'></span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
+    //   .setLatLng(e.latlng)
+    //   .openOn(map);
+    $(".menu-left .menu-wrapper").empty()
+    $(".menu-left .menu-wrapper").append("<h3>Name: " + getName(e.layer.feature.properties.f3) + "</h3><h4>Type: " + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'></span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
+      ratingF()
+      $("#map").toggleClass('map-move')
+      $(".menu-left").toggleClass('menu-active')
+    
+      L.DomEvent.stop(e);
 
   })
 }
 
 function zoomIn(lat, lng) {
-    map.setView([lat, lng], 18);
+  map.setView([lat, lng], 18);
 }
 
 function ifName(name) {
-  if(!name) {
+  if (!name) {
     return ""
   }
   else {
@@ -330,7 +323,7 @@ function ifName(name) {
 }
 
 function ifFound(lat, lng) {
-  if(typeof myLocation.lat !== 'undefined') {
+  if (typeof myLocation.lat !== 'undefined') {
     return "<br><a target='_blank' href='https://www.google.com/maps/dir/?api=1&origin=" + myLocation.lat + "," + myLocation.long + "&destination=" + lat + "," + lng + "'>Google, show route!</a>"
   }
   else {
@@ -339,7 +332,7 @@ function ifFound(lat, lng) {
 }
 
 function getName(name) {
-  if(!name) {
+  if (!name) {
     return 'Unknown'
   }
   else {
@@ -352,7 +345,7 @@ function getType(type) {
 }
 
 function rated(rated) {
-  if(rated) {
+  if (rated) {
     return '[you already rated]'
   }
   else {
@@ -361,14 +354,15 @@ function rated(rated) {
 }
 
 
-map.on('popupopen', function(e) {
-  //if(e.popup.options.centerPop) {map.setView(e.popup._latlng, map.getZoom());}
-  if(e.popup.options.centerPop) {
-    var px = map.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is
-    px.y -= e.popup._container.clientHeight/1.5 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
-    map.panTo(map.unproject(px),{animate: true}); // pan to new center
-  }
-  $(".rat").each(function(i) {
+function ratingF() {
+//map.on('popupopen', function (e) {
+  // //if(e.popup.options.centerPop) {map.setView(e.popup._latlng, map.getZoom());}
+  // if (e.popup.options.centerPop) {
+  //   var px = map.project(e.popup._latlng); // find the pixel location on the map where the popup anchor is
+  //   px.y -= e.popup._container.clientHeight / 1.5 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+  //   map.panTo(map.unproject(px), { animate: true }); // pan to new center
+  // }
+  $(".rat").each(function (i) {
     var idRate = $(this).attr("id")
     var elem = $("#" + idRate)
 
@@ -381,11 +375,11 @@ map.on('popupopen', function(e) {
     var parameters = {
       search: $(this).attr("id")
     };
-    $.get('/getRate', parameters, function(data) {
-      if(typeof data.count !== 'undefined'){
+    $.get('/getRate', parameters, function (data) {
+      if (typeof data.count !== 'undefined') {
         var oldRating = parseInt(data.rating)
         $('.numRate').text(data.count)
-        }
+      }
       else {
         var oldRating = 0
         $('.numRate').text('0')
@@ -393,14 +387,14 @@ map.on('popupopen', function(e) {
 
       elem.rateYo("rating", data.rating);
       elem.rateYo()
-        .on("rateyo.change", function(e, data) {
+        .on("rateyo.change", function (e, data) {
           $(this).prev().text('YOUR RATING');
         });
       elem.rateYo()
-        .on("rateyo.set", function(e, data) {
+        .on("rateyo.set", function (e, data) {
 
-          gj.eachLayer(function(layer) {
-            if(layer.feature.properties.f1 == idRate) {
+          gj.eachLayer(function (layer) {
+            if (layer.feature.properties.f1 == idRate) {
               layer.feature.properties.f5 = true
             }
           });
@@ -409,174 +403,180 @@ map.on('popupopen', function(e) {
             'tourism_id': idRate,
             'rate': data.rating
           }
-          $.post('/rate', data, function(resp) {
+          $.post('/rate', data, function (resp) {
             return
           });
 
           $('#ratedOnly').trigger('change')
-          /*
-          if(oldRating == 0) {
-            layer1.setFeatureStyle(parseInt(idRate), getRed(Math.round(parseInt(data.rate))));
-          }
-          else {
-            layer1.setFeatureStyle(parseInt(idRate), getRed(Math.round(((parseInt(data.rate)) + oldRating) / 2)));
-          }
-          */
+          
         });
     });
 
 
   });
-});
+};
 
 
-$(document).ready(function() {
-    //set initial state.
-    $("input:checkbox[name=filterData]").each(function(){
+$(document).ready(function () {
+  //set initial state.
+  $("input:checkbox[name=filterData]").each(function () {
 
-    $(this).change(function() {
+    $(this).change(function () {
       map.off('move', onMove);
       var pro = $(this).prop('id')
-        if(this.checked) {
-          var index = notIncluded.indexOf(pro);
-          if (index > -1) {
-              notIncluded.splice(index, 1);
-              gj.clearLayers()
-              layer1.clearLayers()
-              addDataMap(mapData)
-          }
-
-        }
-        else {
-          notIncluded.push(pro)
+      if (this.checked) {
+        var index = notIncluded.indexOf(pro);
+        if (index > -1) {
+          notIncluded.splice(index, 1);
           gj.clearLayers()
           layer1.clearLayers()
           addDataMap(mapData)
-
         }
+
+      }
+      else {
+        notIncluded.push(pro)
+        gj.clearLayers()
+        layer1.clearLayers()
+        addDataMap(mapData)
+
+      }
 
     });
   });
 
-    $('#select-all').click(function(event) {
-    if(this.checked) {
-        $('.type-check').each(function() {
-            this.checked = true;
-            $(this).trigger("change");
-        });
-    }
-    else {
-      $('.type-check').each(function() {
-          this.checked = false;
-          $(this).trigger("change");
+  $('#select-all').click(function (event) {
+    if (this.checked) {
+      $('.type-check').each(function () {
+        this.checked = true;
+        $(this).trigger("change");
       });
     }
-});
+    else {
+      $('.type-check').each(function () {
+        this.checked = false;
+        $(this).trigger("change");
+      });
+    }
+  });
 
-$('#ratedBy').click(function(event) {
-  if(this.checked) {
-    ratedMe = false
-  }
-  else {
-    ratedMe = true
-  }
-});
-
-
-$('#ratedOnly').click(function(event) {
-  if(this.checked) {
-    ratedOnly = true
-  }
-  else {
-    ratedOnly = false
-  }
-});
+  $('#ratedBy').click(function (event) {
+    if (this.checked) {
+      ratedMe = false
+    }
+    else {
+      ratedMe = true
+    }
+  });
 
 
-  $('.load-new').on('click', function() {
-    $('.load-new').css({'zIndex': '-1'})
+  $('#ratedOnly').click(function (event) {
+    if (this.checked) {
+      ratedOnly = true
+    }
+    else {
+      ratedOnly = false
+    }
+  });
+
+
+  $('.load-new').on('click', function () {
+    $('.load-new').css({ 'zIndex': '-1' })
     map.off('move', onMove);
-    $( ".loading" ).removeClass('loading-hide')
+    $(".loading").removeClass('loading-hide')
     var parameters = {
       long: map.getCenter().lng,
       lat: map.getCenter().lat
     };
-    $.get('/data', parameters, function(data) {
-    $( ".loading" ).addClass('loading-hide')
-    if(typeof gj != 'undefined') {
-      gj.clearLayers()
-    }
-    if(typeof layer1 != 'undefined') {
-      layer1.clearLayers()
-    }
+    $.get('/data', parameters, function (data) {
+      $(".loading").addClass('loading-hide')
+      if (typeof gj != 'undefined') {
+        gj.clearLayers()
+      }
+      if (typeof layer1 != 'undefined') {
+        layer1.clearLayers()
+      }
 
-    mapData = data
-    addDataMap(mapData)
-    map.fire('move')
-    $('.load-new').css({'zIndex': '9999'})
+      mapData = data
+      addDataMap(mapData)
+      map.fire('move')
+      $('.load-new').css({ 'zIndex': '9999' })
+    })
   })
-  })
 
 
-  var tapped=false
-  $("#map").on("touchstart",function(e){
-    if(!tapped){ //if tap is not set, set up single tap
-      tapped=setTimeout(function(){
-          tapped=null
-          //insert things you want to do when single tapped
-      },300);   //wait 300ms then run single click code
+  var tapped = false
+  $("#map").on("touchstart", function (e) {
+    if (!tapped) { //if tap is not set, set up single tap
+      tapped = setTimeout(function () {
+        tapped = null
+        //insert things you want to do when single tapped
+      }, 300);   //wait 300ms then run single click code
     } else {    //tapped within 300ms of last tap. double tap
       clearTimeout(tapped); //stop single tap callback
-      tapped=null
+      tapped = null
       //insert things you want to do when double tapped
       map.zoomIn(1)
     }
-});
+  });
 
 });
 
 
 
+var menuRight = document.getElementsByClassName('menu-right')[0]
+menuRight.addEventListener('touchstart', handleTouchStart, false);
+menuRight.addEventListener('touchmove', function (e) {
+  handleTouchMove(e, 'right');
+}, false); 
 
-
-document.getElementsByClassName('menu')[0].addEventListener('touchstart', handleTouchStart, false);
-document.getElementsByClassName('menu')[0].addEventListener('touchmove', handleTouchMove, false);
+var menuLeft = document.getElementsByClassName('menu-left')[0]
+menuLeft.addEventListener('touchstart', handleTouchStart, false);
+menuLeft.addEventListener('touchmove', function (e) {
+  handleTouchMove(e, 'left');
+}, false);
 
 var xDown = null;
 var yDown = null;
 
 function handleTouchStart(evt) {
-    xDown = evt.touches[0].clientX;
-    yDown = evt.touches[0].clientY;
+  xDown = evt.touches[0].clientX;
+  yDown = evt.touches[0].clientY;
 };
 
-function handleTouchMove(evt) {
-    if ( ! xDown || ! yDown ) {
-        return;
-    }
+function handleTouchMove(evt, direction) {
+  if (!xDown || !yDown) {
+    return;
+  }
 
-    var xUp = evt.touches[0].clientX;
-    var yUp = evt.touches[0].clientY;
+  var xUp = evt.touches[0].clientX;
+  var yUp = evt.touches[0].clientY;
 
-    var xDiff = xDown - xUp;
-    var yDiff = yDown - yUp;
+  var xDiff = xDown - xUp;
+  var yDiff = yDown - yUp;
 
-    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
-        if ( xDiff > 0 ) {
-            /* left swipe */
-
-        } else {
-            /* right swipe */
-            $( ".show-menu" ).trigger('click')
-        }
+  if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
+    if (xDiff > 0) {
+      /* left swipe */
+      if (direction == 'left') {
+        $(".close-menu").trigger('click')
+      }
+      
     } else {
-        if ( yDiff > 0 ) {
-            /* up swipe */
-        } else {
-            /* down swipe */
-        }
+      /* right swipe */
+      if (direction == 'right') {
+        $(".show-menu").trigger('click')
+      }
+      
     }
-    /* reset values */
-    xDown = null;
-    yDown = null;
+  } else {
+    if (yDiff > 0) {
+      /* up swipe */
+    } else {
+      /* down swipe */
+    }
+  }
+  /* reset values */
+  xDown = null;
+  yDown = null;
 };

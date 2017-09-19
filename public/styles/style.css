@@ -2,17 +2,16 @@
   margin: 0;
   padding: 0;
 }
-
-html, body {
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    letter-spacing: 2px;
-    overflow-x: hidden;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 2px;
+  overflow-x: hidden;
 }
-
 .global-wrapper {
   position: fixed;
   width: 100%;
@@ -20,53 +19,52 @@ html, body {
   overflow-x: hidden;
   background-color: lightgrey;
 }
-
 body {
   font-size: 18px;
 }
-
 h3 {
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   line-height: 1.5;
   padding-bottom: 10px;
-  font-size: 14px;
+  font-size: 18px;
 }
-
+h4 {
+  letter-spacing: 2px;
+  line-height: 1.5;
+  padding-bottom: 10px;
+  font-size: 16px;
+}
 hr {
   border-top: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.87);
   margin: 5px 0 15px 0;
 }
-
 .center-text {
   display: block;
   text-align: center;
   line-height: 1.5;
 }
-
 #map {
-    width: 100%;
-    height: 100%;
-    transition: .5s ease all;
+  width: 100%;
+  height: 100%;
+  transition: .5s ease all;
 }
-
 .map-move {
   transform: translateX(-25%);
 }
-
-
-.leaflet-touch .leaflet-bar a:first-child, .leaflet-touch .leaflet-bar a:last-child {
-	background: #2da0e2;
-	color: white;
-	border: 0px;
+.leaflet-touch .leaflet-bar a:first-child,
+.leaflet-touch .leaflet-bar a:last-child {
+  background: #2da0e2;
+  color: white;
+  border: 0px;
 }
-
-.leaflet-popup-content-wrapper, .leaflet-popup-tip, .leaflet-popup-content-wrapper a {
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip,
+.leaflet-popup-content-wrapper a {
   background-color: #2da0e2;
   color: white;
   font-size: 16px;
 }
-
 .leaflet-popup-content-wrapper a {
   display: block;
   color: #000;
@@ -74,25 +72,19 @@ hr {
   text-decoration: none;
   text-align: center;
 }
-
 .leaflet-popup-content-wrapper a:hover {
   text-decoration: none;
   color: white;
 }
-
-
 .leaflet-popup-content-wrapper b {
   font-size: 18px;
 }
-
 .leaflet-container a.leaflet-popup-close-button {
   color: white;
 }
-
 .leaflet-container a.leaflet-popup-close-button:hover {
-    color: black;
+  color: black;
 }
-
 .show-menu {
   position: absolute;
   top: 10px;
@@ -103,13 +95,11 @@ hr {
   z-index: 999;
   transition: .5s ease all;
   cursor: pointer;
-  z-index: 99999
+  z-index: 99999;
 }
-
 .show-active {
   right: 50%;
 }
-
 .menu {
   position: absolute;
   top: 0;
@@ -120,23 +110,23 @@ hr {
   z-index: 9999;
   transition: .5s ease all;
 }
-
 .menu-right {
   right: 0;
-  transform: translateX(+100%);
+  transform: translateX(100%);
 }
-
+.menu-left {
+  left: 0;
+  transform: translateX(-100%);
+}
 .menu-active {
-  transform: translateX(0)
+  transform: translateX(0);
 }
-
 .menu-wrapper {
   padding: 10px 15px;
 }
-
 .loading {
   position: absolute;
-  top: calc(50% - 60px);
+  top: calc(50% - 30px);
   left: 10px;
   border: 8px solid white;
   border-radius: 50%;
@@ -149,75 +139,70 @@ hr {
   animation: spin 1.5s ease infinite;
   z-index: 999;
 }
-
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
-
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-
 .loading-hide {
   opacity: 0;
   z-index: -1;
 }
-
 .regular-checkbox {
-	-webkit-appearance: none;
-  -moz-appearance:none;
-	background-color: #fff;
-	border: 1px solid #2da0e2;
-	padding: 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  border: 1px solid #2da0e2;
+  padding: 10px;
   margin: 0 0 10px 0;
-	border-radius: 0;
-	display: inline-block;
-	position: relative;
+  border-radius: 0;
+  display: inline-block;
+  position: relative;
   cursor: pointer;
 }
-
-.regular-checkbox:active, .regular-checkbox:checked:active {
+.regular-checkbox:active,
+.regular-checkbox:checked:active {
   -webkit-appearance: none;
-  -moz-appearance:none;
-
+  -moz-appearance: none;
 }
-
 .regular-checkbox:checked {
-	border: 1px solid #2da0e2;
+  border: 1px solid #2da0e2;
   -webkit-appearance: none;
-  -moz-appearance:none;
-
+  -moz-appearance: none;
 }
-
 .regular-checkbox:checked:after {
-	content: '\2716';
-	font-size: 16px;
-	position: absolute;
-	top: 0;
-	left: 3px;
-	color: #2da0e2;
+  content: '\2716';
+  font-size: 16px;
+  position: absolute;
+  top: 0;
+  left: 3px;
+  color: #2da0e2;
 }
-
 .checkbox-wrapper label {
   position: relative;
   top: -14px;
   cursor: pointer;
 }
-
 .image-legend {
   height: 22px;
   width: 22px;
   background: white;
   float: right;
 }
-
 .check-sub {
   position: relative;
 }
-
-
 .load-new {
   position: absolute;
   bottom: 10px;
@@ -233,20 +218,16 @@ hr {
   z-index: 999;
   letter-spacing: 3px;
   font-weight: 600;
-  transition: .5s ease all
+  transition: 0.5s ease all;
 }
-
 .load-new:hover {
   color: rgba(0, 0, 0, 0.87);
   background-color: white;
-  border: 3px solid #2da0e2
+  border: 3px solid #2da0e2;
 }
-
 .show-class {
   display: block;
 }
-
-
 .zoom-button {
   display: block;
   cursor: pointer;
@@ -254,36 +235,90 @@ hr {
   text-align: center;
   font-weight: 600;
 }
-
 .zoom-button:hover {
-  color: #fff
+  color: #fff;
 }
-
-
 .leaflet-control-layers-toggle {
   width: 32px !important;
   height: 32px !important;
   background-size: 20px 20px !important;
 }
-
+.close {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.close:hover::before,
+.close:hover::after {
+  background: #2da0e2;
+}
+.close::before,
+.close::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  margin-top: -1px;
+  background: #000;
+}
+.close::before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.close::after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.close.blades::before,
+.close.blades::after {
+  border-radius: 5px 0;
+}
+.menu-left a {
+  display: block;
+  text-align: center;
+  font-weight: 600;
+  color: black;
+  text-decoration: none;
+}
+.menu-left a:hover {
+  color: #2da0e2;
+}
+.menu-left .zoom-button {
+  display: block;
+  cursor: pointer;
+  color: #000;
+  text-align: center;
+  font-weight: 600;
+}
+.menu-left .zoom-button:hover {
+  color: #2da0e2;
+}
 @media screen and (max-width: 750px) {
-    .menu {
-        width: 100%;
-    }
-
-    .show-active {
-      right: 0;
-    }
-
-    .load-new {
-      padding: 15px 15px;
-      font-size: 14px;
-      letter-spacing: 2px;
-      width: 195px;
-      bottom: 30px;
-      left: auto;
-      right: 0;
-      transform: translateX(0);
-    }
-
+  .menu {
+    width: 100%;
+  }
+  .show-active {
+    right: 0;
+  }
+  .load-new {
+    padding: 15px 15px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    width: 195px;
+    bottom: 30px;
+    left: auto;
+    right: 0;
+    transform: translateX(0);
+  }
 }

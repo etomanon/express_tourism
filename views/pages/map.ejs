@@ -9,13 +9,10 @@
     <meta name="author" content="JS">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>World Tourist Map</title>
+    <link href="/styles/normalize.css" rel="stylesheet" type="text/css">
     <link rel="icon" type="image/png" href="images/attraction.png" />
     <link href="/styles/style.css" rel="stylesheet" type="text/css">
     <link rel='stylesheet' href='/styles/leaflet.css' />
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/js/geosearch.js"></script>
-    <script src="/js/jquery.rateyo.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
     <link href="/styles/style.css" rel="stylesheet" type="text/css">
     <link href="/styles/jquery.rateyo.min.css" rel="stylesheet" type="text/css">
@@ -28,7 +25,14 @@
         <div id="map"></div>
 
         <div class='loading'></div>
-
+        <div class="menu menu-left">
+            <span class="close blades close-menu"></span>
+            <div class='menu-wrapper'>
+            <!-- <h3></h3>
+            <h4></h4>
+            <h4 class="ratin"></h4> -->
+            </div>
+        </div>
         <div class="show-menu">Menu</div>
         <div class='menu menu-right'>
           <div class='menu-wrapper'>
@@ -61,10 +65,12 @@
 
 
 </div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.1.0/leaflet.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/geosearch.js"></script>
+<script src="/js/jquery.rateyo.min.js"></script>
 <script src="/js/leaflet.markercluster.js"></script>
 <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-
-
 <script src="/js/map.js"></script>
 </body>
 </html>
