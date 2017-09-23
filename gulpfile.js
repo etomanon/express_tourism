@@ -1,41 +1,74 @@
-var gulp = require('gulp');
-var less = require('gulp-less');
-var server = require('gulp-develop-server');
-var bs = require('browser-sync').create();  
-var path = require('path');
+const gulp = require('gulp');
+//const imagemin = require('gulp-imagemin');
+const uglify = require('gulp-uglify');
+const less = require('gulp-less');
+const concat = require('gulp-concat');
+const cleanCSS = require('gulp-clean-css');
+const sourcemaps = require('gulp-sourcemaps');
+const autoprefixer = require('gulp-autoprefixer');
+const gutil = require('gulp-util')
+const browserSync = require('browser-sync').create();
+const nodemon = require('gulp-nodemon');
 
-gulp.task('less', function () {
- return gulp.src('./public/styles/*.less')
-   .pipe(less({
-     paths: [ path.join(__dirname, 'less', 'includes') ]
-   }))
-   .pipe(gulp.dest('./public/styles'))
+
+// Optimize Images
+// gulp.task('imageMin', () =>
+// 	gulp.src('src/images/*')
+// 		.pipe(imagemin())
+// 		.pipe(gulp.dest('public/images'))
+// );
+
+// Bundle & minify LESS files
+gulp.task('css', function(){
+  return gulp.src('src/styles/*.less')
+      .pipe(less())
+      .pipe(concat('main.min.css'))
+      .pipe(sourcemaps.init())
+      .pipe(cleanCSS())
+      .pipe(sourcemaps.write())
+      .pipe(autoprefixer('last 2 version'))
+      .pipe(gulp.dest('public/styles'))
 });
 
-  var options = {
-    server: {
-      path: './bin/www',
-      execArgv: ['--harmony']
-    },
-    bs: {
-      proxy: {
-        target: 'http://localhost:3000',
-        middleware: function (req, res, next) {
-          console.log(req.url);
-          next();
-        }
-      },
-      files: ['./public/**/*', './views/**'], // files to watch with bs instantly (.ejs & .css)
-      logLevel: 'debug'
-    }
-  };
-  
-  gulp.task('start', ['less'], function () {
-    server.listen(options.server, function (error) {
-      if (!error)
-        bs.init(options.bs);
-    });
-    gulp.watch('./public/styles/*.less', ['less']);
-    gulp.watch('./routes/**').on('change', bs.reload);
-    gulp.watch('./app.js').on('change', bs.reload);
-  });
+// Bundle & minify JS
+gulp.task('scripts', function(){
+  return gulp.src(['src/js/jquery.js','src/js/leaflet.js','src/js/!(map)*.js','src/js/map.js'])
+      .pipe(concat('main.min.js'))
+      .pipe(sourcemaps.init())
+      .pipe(uglify())
+      .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest('public/js'))
+});
+
+
+// Refresh browser on change
+gulp.task('browser-sync', ['nodemon'], function() {
+	browserSync.init(null, {
+		proxy: "http://localhost:3000",
+        files: ["public/**/*.*", "routes/**/*.*", "views/**/*.*", "app.js"],
+        port: 7000,
+	});
+});
+gulp.task('nodemon', function (cb) {
+	
+	var started = false;
+	
+	return nodemon({
+		script: 'bin/www'
+	}).on('start', function () {
+		if (!started) {
+			cb();
+			started = true; 
+		} 
+	});
+});
+
+
+gulp.task('default', ['css', 'scripts', 'watch', 'browser-sync']);
+
+gulp.task('watch', function(){
+  gulp.watch('src/js/*.js', ['scripts'])
+  //gulp.watch('src/images/*', ['imageMin'])
+  gulp.watch('src/styles/*.less', ['css'])
+});
