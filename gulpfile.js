@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-//const imagemin = require('gulp-imagemin');
+const imagemin = require('gulp-imagemin');
 const uglify = require('gulp-uglify');
 const less = require('gulp-less');
 const concat = require('gulp-concat');
@@ -12,21 +12,19 @@ const nodemon = require('gulp-nodemon');
 
 
 // Optimize Images
-// gulp.task('imageMin', () =>
-// 	gulp.src('src/images/*')
-// 		.pipe(imagemin())
-// 		.pipe(gulp.dest('public/images'))
-// );
+gulp.task('imageMin', () =>
+	gulp.src('src/images/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest('public/images'))
+);
 
 // Bundle & minify LESS files
 gulp.task('css', function(){
-  return gulp.src('src/styles/*.less')
+  return gulp.src(['src/styles/normalize.less', 'src/styles/!(style)*.less','src/styles/style.less'])
       .pipe(less())
-      .pipe(concat('main.min.css'))
-      .pipe(sourcemaps.init())
-      .pipe(cleanCSS())
-      .pipe(sourcemaps.write())
       .pipe(autoprefixer('last 2 version'))
+      .pipe(concat('main.min.css'))
+      .pipe(cleanCSS())
       .pipe(gulp.dest('public/styles'))
 });
 
@@ -50,7 +48,7 @@ gulp.task('browser-sync', ['nodemon'], function() {
         port: 7000,
 	});
 });
-gulp.task('nodemon', function (cb) {
+gulp.task('nodemon', ['imageMin'], function (cb) {
 	
 	var started = false;
 	
@@ -65,10 +63,10 @@ gulp.task('nodemon', function (cb) {
 });
 
 
-gulp.task('default', ['css', 'scripts', 'watch', 'browser-sync']);
+gulp.task('default', ['imageMin','css', 'scripts', 'watch', 'browser-sync']);
 
 gulp.task('watch', function(){
   gulp.watch('src/js/*.js', ['scripts'])
-  //gulp.watch('src/images/*', ['imageMin'])
+  gulp.watch('src/images/*.png', ['imageMin'])
   gulp.watch('src/styles/*.less', ['css'])
 });
