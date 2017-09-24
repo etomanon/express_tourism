@@ -36,7 +36,7 @@ app.use(cookieParser());
 var pgSession = require('connect-pg-simple')(session);
 app.use(session({
   store: new pgSession({
-    conString: conString //process.env.DATABASE_URL
+    conString: conString 
   }),
   secret: 'badumtaradx',
   resave: false,
