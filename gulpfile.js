@@ -14,7 +14,7 @@ const nodemon = require('gulp-nodemon');
 // Optimize Images
 gulp.task('imageMin', () =>
 	gulp.src('src/images/*')
-		.pipe(imagemin())
+		//.pipe(imagemin())
 		.pipe(gulp.dest('public/images'))
 );
 
