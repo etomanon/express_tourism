@@ -9,21 +9,22 @@ var validator = require('express-validator');
 var index = require('./routes/index');
 var compression = require('compression');
 var helmet = require('helmet');
+var pgSession = require('connect-pg-simple')(session);
 
 var app = express();
-app.use(compression()); //Compress all routes
-app.use(helmet());
+app.use(compression()); // Compress all routes
+app.use(helmet()); // Secure Express app with various HTTP headers
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Setup connection
-var username = "postgres" // sandbox username
-var password = "postgres" // read only privileges on our table
+// Setup database connection
+var username = "postgres" 
+var password = "postgres" 
 var host = "localhost:5432"
-var database = "spatial" // database name
-var conString1 = process.env.DATABASE_URL || "postgres://" + username + ":" + password + "@" + host + "/" + database; // Your Database Connection
+var database = "spatial"
+conString = process.env.DATABASE_URL || "postgres://" + username + ":" + password + "@" + host + "/" + database; 
 
 
 app.use(logger('dev'));
@@ -33,10 +34,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(validator());
 app.use(cookieParser());
-var pgSession = require('connect-pg-simple')(session);
+
 app.use(session({
   store: new pgSession({
-    conString: conString1 //process.env.DATABASE_URL
+    conString: conString 
   }),
   secret: 'badumtaradx',
   resave: false,
