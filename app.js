@@ -9,9 +9,10 @@ var validator = require('express-validator');
 var index = require('./routes/index');
 var compression = require('compression');
 var helmet = require('helmet');
+var pgSession = require('connect-pg-simple')(session);
 
 var app = express();
-app.use(compression()); //Compress all routes
+app.use(compression()); // Compress all routes
 app.use(helmet()); // Secure Express app with various HTTP headers
 
 // view engine setup
@@ -33,7 +34,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(validator());
 app.use(cookieParser());
-var pgSession = require('connect-pg-simple')(session);
+
 app.use(session({
   store: new pgSession({
     conString: conString 
