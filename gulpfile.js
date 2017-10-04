@@ -32,7 +32,7 @@ gulp.task('css', function(){
 gulp.task('scripts', function(){
   return gulp.src(['src/js/jquery.js','src/js/leaflet.js','src/js/!(map)*.js','src/js/map.js'])
       .pipe(concat('main.min.js'))
-      //.pipe(sourcemaps.init())
+      .pipe(sourcemaps.init())
       .pipe(babel({
         "presets": [
           ["env", {
@@ -40,9 +40,9 @@ gulp.task('scripts', function(){
           }]
         ]
       }))
-      //.pipe(uglify())
-      //.on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
-      //.pipe(sourcemaps.write())
+      .pipe(uglify())
+      .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest('public/js'))
 });
 
