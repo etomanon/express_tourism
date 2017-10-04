@@ -9,7 +9,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const gutil = require('gulp-util')
 const browserSync = require('browser-sync').create();
 const nodemon = require('gulp-nodemon');
-
+const babel = require('gulp-babel');
 
 // Optimize Images
 gulp.task('imageMin', () =>
@@ -32,10 +32,17 @@ gulp.task('css', function(){
 gulp.task('scripts', function(){
   return gulp.src(['src/js/jquery.js','src/js/leaflet.js','src/js/!(map)*.js','src/js/map.js'])
       .pipe(concat('main.min.js'))
-      .pipe(sourcemaps.init())
-      .pipe(uglify())
-      .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
-      .pipe(sourcemaps.write())
+      //.pipe(sourcemaps.init())
+      .pipe(babel({
+        "presets": [
+          ["env", {
+            "modules": false
+          }]
+        ]
+      }))
+      //.pipe(uglify())
+      //.on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
+      //.pipe(sourcemaps.write())
       .pipe(gulp.dest('public/js'))
 });
 
