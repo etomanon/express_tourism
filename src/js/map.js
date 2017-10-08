@@ -1,5 +1,5 @@
 var mapData
-var layer1
+let layer1
 
 var nameArray2 = ['Artwork', 'Attraction', 'Picnic site', 'Theme park', 'Viewpoint', 'Hunting lodge', 'Gallery', 'Zoo', 'Wilderness hut', 'Museum', 'Other']
 var typeArray2 = ['artwork', 'attraction', 'picnic_site', 'theme_park', 'viewpoint', 'hunting_lodge', 'gallery', 'zoo', 'wilderness_hut', 'museum', 'yes']
@@ -176,7 +176,7 @@ function found(e) {
 }
 
 var geoOptions = {
-  enableHighAccuracy: true,
+  enableHighAccuracy: false,
   timeout: 20000,
   maximumAge: 0
 };
@@ -190,7 +190,6 @@ function error(err) {
 navigator.geolocation.getCurrentPosition(found, error, geoOptions);
 
 var gj
-var layer1
 var ratedMe = false
 var ratedOnly = false
 var notIncluded = ['ratedMe', 'ratedOnly', 'guest_house', 'information', 'hotel', 'hostel', 'motel', 'chalet', 'caravan_site', 'camp_site', 'apartment', 'alpine_hut']
@@ -516,4 +515,12 @@ $(document).ready(function () {
       opacity: 1
     }, 250)
   }, 500);
+
+  if(!visited) {
+    $('.pop-up').addClass('pop-visi')
+  }
+
+  $('.closed').on('click', function() {
+    $(this).parent().addClass('pop-move')
+  })
 });

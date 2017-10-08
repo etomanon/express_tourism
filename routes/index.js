@@ -6,7 +6,29 @@ const pg = require("pg"); // Postgres
 
 /* GET the map page */
 router.get('/', function(req, res) {
-    res.render('pages/map');
+    
+
+    let client = new pg.Client(conString);
+    client.connect();
+    // Set up your database query to display GeoJSON
+    let if_visited = "SELECT COUNT(sid) FROM session WHERE sid = '" + req.sessionID + "'";
+    let query = client.query(if_visited);
+    query.on("row", function(row, result) {
+      result.addRow(row);
+    });
+    query.on("end", function(result) {
+      // First visit
+      if((result.rows[0].count) == 0) {
+        res.render('pages/map', {visited : 'false'});
+      }
+      // Second visit
+      else {
+        res.render('pages/map', {visited : 'true'});
+      }
+      
+      client.end();
+      res.end();
+    });
 });
 
 

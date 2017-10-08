@@ -1,58 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="World tourist map, search for tourist attractions all around world!">
-    <meta name="keywords" content="map,tourist,tourism,attraction,trip,museum,artwork,zoo,viewpoint,gallery,where,route,nearest,closest">
-    <meta name="author" content="JS">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>World Tourist Map</title>
-    <link href="/styles/main.min.css" rel="stylesheet" type="text/css">
-    <link rel="icon" type="image/png" href="images/attraction.png" />
-    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
-</head>
-<body>
-<div class='global-wrapper'>
-        <div id="map"></div>
 
-        <div class='loading'></div>
-        <div class="menu menu-left">
-            <span class="close blades close-menu"></span>
-            <div class='menu-wrapper'>
-            </div>
-        </div>
-        <div class="show-menu">Menu</div>
-        <div class='menu menu-right'>
-          <div class='menu-wrapper'>
-            <h3>Filter</h3>
-            <div class='checkbox-wrapper'>
-              <input type="checkbox" checked name="select-all" id="select-all" class="regular-checkbox" />
-              <label for="select-all">Show all</label>
-              <hr>
-              <div class='check-sub'>
-              <%
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="World tourist map, search for tourist attractions all around world!">
+  <meta name="keywords" content="map,tourist,tourism,attraction,trip,museum,artwork,zoo,viewpoint,gallery,where,route,nearest,closest">
+  <meta name="author" content="JS">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>World Tourist Map</title>
+  <link href="/styles/main.min.css" rel="stylesheet" type="text/css">
+  <link rel="icon" type="image/png" href="images/attraction.png" />
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext"
+    rel="stylesheet">
+</head>
+
+<body>
+  <script>
+    var visited = <%- (visited) %>;
+  </script>
+  <div class="pop-up">
+      <span class="closed">x</span>
+    <div class="inner-pop">
+      <h3>World Tourist Map</h3>
+      <hr>
+      <p>Find tourist attractions all around the world!<br><br> Data are from OpenStreetMap - crowdsourcing project.<br><br>        Even you can add new attractions - go to <a target="_blank" href="http://wiki.openstreetmap.org/wiki/Beginners%27_guide">OpenStreetMap</a>        to learn more!
+      </p>
+    </div>
+  </div>
+  <div class='global-wrapper'>
+    <div id="map"></div>
+
+    <div class='loading'></div>
+    <div class="menu menu-left">
+      <span class="close close-menu"></span>
+      <div class='menu-wrapper'>
+      </div>
+    </div>
+    <div class="show-menu">Menu</div>
+    <div class='menu menu-right'>
+      <div class='menu-wrapper'>
+        <h3>Filter</h3>
+        <div class='checkbox-wrapper'>
+          <input type="checkbox" checked name="select-all" id="select-all" class="regular-checkbox" />
+          <label for="select-all">Show all</label>
+          <hr>
+          <div class='check-sub'>
+            <%
               var nameArray = ['Artwork', 'Attraction', 'Picnic site', 'Theme park', 'Viewpoint', 'Hunting lodge', 'Gallery', 'Zoo', 'Wilderness hut', 'Museum', 'Other']
               var typeArray = ['artwork', 'attraction', 'picnic_site', 'theme_park', 'viewpoint', 'hunting_lodge', 'gallery', 'zoo', 'wilderness_hut', 'museum', 'yes']
               for(var i=0; i<typeArray.length; i++) {%>
-                 <input type='checkbox' checked id='<%= typeArray[i] %>' name='filterData' class='regular-checkbox type-check' />
-                 <label for="<%= typeArray[i] %>"><%= nameArray[i] %></label>
-                 <img alt='<%= nameArray[i] %>' title='<%= nameArray[i] %>' src='images/<%= typeArray[i] %>.png' class='image-legend'>
-                 <br>
-              <% } %>
-              <hr>
-              <input type='checkbox' checked id='ratedBy' name='filterData' class='regular-checkbox' />
-              <label for="ratedBy">Already rated by you</label>
+              <input type='checkbox' checked id='<%= typeArray[i] %>' name='filterData' class='regular-checkbox type-check' />
+              <label for="<%= typeArray[i] %>"><%= nameArray[i] %></label>
+              <img alt='<%= nameArray[i] %>' title='<%= nameArray[i] %>' src='images/<%= typeArray[i] %>.png' class='image-legend'>
               <br>
-              <input type='checkbox' id='ratedOnly' name='filterData' class='regular-checkbox' />
-              <label for="ratedOnly">Only rated by you</label>
-            </div>
-          	</div>
+              <% } %>
+                <hr>
+                <input type='checkbox' checked id='ratedBy' name='filterData' class='regular-checkbox' />
+                <label for="ratedBy">Already rated by you</label>
+                <br>
+                <input type='checkbox' id='ratedOnly' name='filterData' class='regular-checkbox' />
+                <label for="ratedOnly">Only rated by you</label>
           </div>
         </div>
-        <div class='load-new'>SEARCH THIS AREA</div>
+      </div>
+    </div>
+    <div class='load-new'>SEARCH THIS AREA</div>
 
 
-</div>
-<script src="/js/main.min.js"></script>
+  </div>
+  <script src="/js/main.min.js"></script>
 </body>
+
 </html>
