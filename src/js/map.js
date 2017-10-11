@@ -222,7 +222,7 @@ function addDataMap(mapData) {
     }
   }
   layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true });
-  layer1.addLayer(gj);
+  layer1.addLayers(gj);
   map.addLayer(layer1);
   map.on('move', onMove)
 
