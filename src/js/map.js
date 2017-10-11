@@ -221,10 +221,11 @@ function addDataMap(mapData) {
       map.fitBounds(gj.getBounds())
     }
   }
-  console.log(layer1)
   layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true });
   layer1.addLayers(gj);
   map.addLayer(layer1);
+  $("input:checkbox[name=filterData]").on('change', checkChecked)
+  $('#select-all').on('click', checkAll)
   map.on('move', onMove)
 
 
@@ -344,37 +345,34 @@ function ratingF() {
 };
 
 
-
-//set initial state.
-$("input:checkbox[name=filterData]").each(function () {
-
-  $(this).change(function () {
-    map.off('move', onMove);
-    var pro = $(this).prop('id')
-    if (this.checked) {
-      var index = notIncluded.indexOf(pro);
-      if (index > -1) {
-        notIncluded.splice(index, 1);
-        layer1.removeLayer(gj)
-        gj.clearLayers()
-        addDataMap(mapData)
-      }
-
-    }
-    else {
-      var index1 = notIncluded.indexOf(pro);
-      if (index1 == -1) {
-        notIncluded.push(pro)
-        layer1.removeLayer(gj)
-        gj.clearLayers()
-        addDataMap(mapData)
-      }
+function checkChecked() {
+  $("input:checkbox[name=filterData]").off('change')
+  map.off('move', onMove);
+  var pro = $(this).prop('id')
+  if (this.checked) {
+    var index = notIncluded.indexOf(pro);
+    if (index > -1) {
+      notIncluded.splice(index, 1);
+      layer1.removeLayer(gj)
+      gj.clearLayers()
+      addDataMap(mapData)
     }
 
-  });
-});
+  }
+  else {
+    var index1 = notIncluded.indexOf(pro);
+    if (index1 == -1) {
+      notIncluded.push(pro)
+      layer1.removeLayer(gj)
+      gj.clearLayers()
+      addDataMap(mapData)
+    }
+  }
+}
 
-$('#select-all').click(function (event) {
+function checkAll() {
+  $('#select-all').off('click')
+  $("input:checkbox[name=filterData]").off('change')
   if (this.checked) {
     $('.type-check').each(function () {
       this.checked = true;
@@ -404,7 +402,7 @@ $('#select-all').click(function (event) {
       addDataMap(mapData)
     });;
   }
-});
+}
 
 $('#ratedBy').click(function (event) {
   if (this.checked) {
