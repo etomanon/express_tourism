@@ -354,8 +354,8 @@ $("input:checkbox[name=filterData]").each(function () {
       var index = notIncluded.indexOf(pro);
       if (index > -1) {
         notIncluded.splice(index, 1);
+        layer1.removeLayer(gj)
         gj.clearLayers()
-        layer1.clearLayers()
         addDataMap(mapData)
       }
 
@@ -364,8 +364,8 @@ $("input:checkbox[name=filterData]").each(function () {
       var index1 = notIncluded.indexOf(pro);
       if (index1 == -1) {
         notIncluded.push(pro)
+        layer1.removeLayer(gj)
         gj.clearLayers()
-        layer1.clearLayers()
         addDataMap(mapData)
       }
     }
@@ -418,13 +418,12 @@ $('.load-new').on('click', function () {
   };
   $.get('/data', parameters, function (data) {
     $(".loading").addClass('loading-hide')
+    if (typeof layer1 != 'undefined') {
+      layer1.removeLayer(gj)
+    }
     if (typeof gj != 'undefined') {
       gj.clearLayers()
     }
-    if (typeof layer1 != 'undefined') {
-      layer1.clearLayers()
-    }
-
     mapData = data
     addDataMap(mapData)
     map.fire('move')
