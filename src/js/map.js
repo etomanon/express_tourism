@@ -221,6 +221,7 @@ function addDataMap(mapData) {
       map.fitBounds(gj.getBounds())
     }
   }
+  console.log(layer1)
   layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true });
   layer1.addLayers(gj);
   map.addLayer(layer1);
@@ -377,14 +378,31 @@ $('#select-all').click(function (event) {
   if (this.checked) {
     $('.type-check').each(function () {
       this.checked = true;
-      $(this).trigger("change");
-    });
+      map.off('move', onMove);
+      var pro = $(this).prop('id')
+      var index = notIncluded.indexOf(pro);
+      if (index > -1) {
+        notIncluded.splice(index, 1);
+      }
+    }).promise().done(function () {
+      layer1.removeLayer(gj)
+      gj.clearLayers()
+      addDataMap(mapData)
+    });;
   }
   else {
     $('.type-check').each(function () {
       this.checked = false;
-      $(this).trigger("change");
-    });
+      var pro = $(this).prop('id')
+      var index1 = notIncluded.indexOf(pro);
+      if (index1 == -1) {
+        notIncluded.push(pro)
+      }
+    }).promise().done(function () {
+      layer1.removeLayer(gj)
+      gj.clearLayers()
+      addDataMap(mapData)
+    });;
   }
 });
 
@@ -515,11 +533,11 @@ $(document).ready(function () {
     }, 250)
   }, 500);
 
-  if(!visited) {
+  if (!visited) {
     $('.pop-up').addClass('pop-visi')
   }
 
-  $('.closed').on('click', function() {
+  $('.closed').on('click', function () {
     $(this).parent().addClass('pop-move')
   })
 });
