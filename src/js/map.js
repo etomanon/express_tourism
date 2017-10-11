@@ -347,6 +347,7 @@ function ratingF() {
 
 function checkChecked() {
   $("input:checkbox[name=filterData]").off('change')
+  $('#select-all').off('click')
   map.off('move', onMove);
   var pro = $(this).prop('id')
   if (this.checked) {
