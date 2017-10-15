@@ -51,21 +51,36 @@ var map = L.map('map', {
   maxZoom: 18
 });
 
-var carto1 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-  attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="http://carto.com/attributions">&copy; Carto</a>',
-  subdomains: 'abcd',
-  maxZoom: 19
+
+
+// var carto1 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+//   attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="http://carto.com/attributions">&copy; Carto</a>',
+//   subdomains: 'abcd',
+//   maxZoom: 19
+// });
+
+// var carto2 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
+//   attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="http://carto.com/attributions">&copy; Carto</a>',
+//   subdomains: 'abcd',
+//   maxZoom: 19
+// });
+
+
+var carto1 = L.tileLayer('https://api.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZXRvbWFub24iLCJhIjoiY2o4dDYyOXFnMGl6MzJxcDAxcmpuenYxdCJ9.TBlWfbR9wNimqgd8uZcNVQ', {
+  attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="https://www.mapbox.com">&copy; Mapbox</a>',
+  subdomains: 'abc',
+  maxZoom: 20
 });
 
-var carto2 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
-  attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="http://carto.com/attributions">&copy; Carto</a>',
-  subdomains: 'abcd',
-  maxZoom: 19
+var carto2 = L.tileLayer('https://api.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZXRvbWFub24iLCJhIjoiY2o4dDYyOXFnMGl6MzJxcDAxcmpuenYxdCJ9.TBlWfbR9wNimqgd8uZcNVQ', {
+  attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="https://www.mapbox.com">&copy; Mapbox</a>',
+  subdomains: 'abc',
+  maxZoom: 20
 });
 
 var baseLayers = {
-  "Light Carto": carto1,
-  "Dark Carto": carto2
+  "Light Mapbox": carto1,
+  "Dark Mapbox": carto2
 };
 
 L.control.layers(baseLayers, null, { position: 'topleft' }).addTo(map);
@@ -233,7 +248,7 @@ function addDataMap(mapData) {
 
     map.setView([e.latlng.lat, e.latlng.lng], map.getZoom());
     $(".menu-left .menu-wrapper").empty()
-    $(".menu-left .menu-wrapper").append("<h3>" + getName(e.layer.feature.properties.f3) + "</h3><hr><h4>" + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'></span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
+    $(".menu-left .menu-wrapper").append("<h3>" + getName(e.layer.feature.properties.f3) + "</h3><hr><h4>" + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'>0</span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
     ratingF()
     $("#map").addClass('map-move-right')
     $(".menu-left").addClass('menu-active')

@@ -62,12 +62,32 @@ hr {
     transition: .5s ease all;
 }
 
+.leaflet-control {
+    transition: .5s ease transform;
+}
+
 .map-move {
-    transform: translate3d(-25%, 0, 0);
+    transform: translate3d(-160px, 0, 0);
+
+    .leaflet-control {
+        transform: translate3d(160px, 0, 0);
+    }
 }
 
 .map-move-right {
-    transform: translate3d(25%, 0, 0);
+    transform: translate3d(160px, 0, 0);
+
+    .leaflet-control {
+        transform: translate3d(160px, 0, 0);
+    }
+}
+
+.map-move-right.map-move {
+    transform: translate3d(0, 0, 0);
+
+    .leaflet-control {
+        transform: translate3d(320px, 0, 0);
+    }
 }
 
 .leaflet-touch .leaflet-bar a:first-child,
@@ -124,14 +144,14 @@ hr {
 }
 
 .show-active {
-    right: 50%;
+    right: 0;
 }
 
 .menu {
     position: absolute;
     top: 0;
     height: 100%;
-    width: 50%;
+    width: 320px;
     overflow: auto;
     background: #fff;
     color: rgba(0, 0, 0, 0.87);
@@ -400,7 +420,7 @@ hr {
     transform: translate(-50%,-100%);
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 640px) {
     .menu {
         width: 100%;
         font-size: 1rem;
