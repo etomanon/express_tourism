@@ -237,14 +237,11 @@ function addDataMap(mapData) {
     }
   }
   layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true });
-
   let checkForEmpty = setInterval(function () {
     if (layer1.getLayers().length == 0) {
-      clearInterval(checkForEmpty)
       layer1.addLayers(gj);
       map.addLayer(layer1);
-      $("input:checkbox[name=filterData]").on('change', checkChecked)
-      $('#select-all').on('click', checkAll)
+      enableCheckbox()
       map.on('move', onMove)
 
       layer1.on('click', function (e) {
@@ -259,6 +256,8 @@ function addDataMap(mapData) {
         L.DomEvent.stop(e);
 
       })
+
+      clearInterval(checkForEmpty)
     }
   }, 100);
 
@@ -368,10 +367,24 @@ function ratingF() {
   });
 };
 
-
-function checkChecked() {
+function disableCheckbox() {
+  $("input:checkbox[name=filterData]").prop("disabled", true);
+  $("#select-all").prop("disabled", true);
   $("input:checkbox[name=filterData]").off('change')
   $('#select-all').off('click')
+}
+
+function enableCheckbox() {
+  $("input:checkbox[name=filterData]").prop("disabled", false);
+  $("#select-all").prop("disabled", false);
+  $("input:checkbox[name=filterData]").on('change', checkChecked)
+  $('#select-all').on('click', checkAll)
+}
+
+
+function checkChecked() {
+  disableCheckbox()
+
   map.off('move', onMove);
   var pro = $(this).prop('id')
   if (this.checked) {
@@ -396,8 +409,7 @@ function checkChecked() {
 }
 
 function checkAll() {
-  $('#select-all').off('click')
-  $("input:checkbox[name=filterData]").off('change')
+  disableCheckbox()
   if (this.checked) {
     $('.type-check').each(function () {
       this.checked = true;
