@@ -237,25 +237,34 @@ function addDataMap(mapData) {
     }
   }
   layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true });
-  layer1.addLayers(gj);
-  map.addLayer(layer1);
-  $("input:checkbox[name=filterData]").on('change', checkChecked)
-  $('#select-all').on('click', checkAll)
-  map.on('move', onMove)
+
+  let checkForEmpty = setInterval(function () {
+    if (layer1.getLayers().length == 0) {
+      clearInterval(checkForEmpty)
+      layer1.addLayers(gj);
+      map.addLayer(layer1);
+      $("input:checkbox[name=filterData]").on('change', checkChecked)
+      $('#select-all').on('click', checkAll)
+      map.on('move', onMove)
+
+      layer1.on('click', function (e) {
+
+        map.setView([e.latlng.lat, e.latlng.lng], map.getZoom());
+        $(".menu-left .menu-wrapper").empty()
+        $(".menu-left .menu-wrapper").append("<h3>" + getName(e.layer.feature.properties.f3) + "</h3><hr><h4>" + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'>0</span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
+        ratingF()
+        $("#map").addClass('map-move-right')
+        $(".menu-left").addClass('menu-active')
+
+        L.DomEvent.stop(e);
+
+      })
+    }
+  }, 100);
 
 
-  layer1.on('click', function (e) {
 
-    map.setView([e.latlng.lat, e.latlng.lng], map.getZoom());
-    $(".menu-left .menu-wrapper").empty()
-    $(".menu-left .menu-wrapper").append("<h3>" + getName(e.layer.feature.properties.f3) + "</h3><hr><h4>" + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'>0</span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
-    ratingF()
-    $("#map").addClass('map-move-right')
-    $(".menu-left").addClass('menu-active')
 
-    L.DomEvent.stop(e);
-
-  })
 }
 
 function zoomIn(lat, lng) {
