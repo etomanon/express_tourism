@@ -21,10 +21,12 @@ gulp.task('imageMin', () =>
 // Bundle & minify LESS files
 gulp.task('css', function(){
   return gulp.src(['src/styles/normalize.less', 'src/styles/!(style)*.less','src/styles/style.less'])
+      .pipe(sourcemaps.init())
       .pipe(less())
       .pipe(autoprefixer('last 2 version'))
       .pipe(concat('main.min.css'))
       .pipe(cleanCSS())
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest('public/styles'))
 });
 

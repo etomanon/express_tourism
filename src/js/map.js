@@ -395,6 +395,9 @@ function checkChecked() {
       gj.clearLayers()
       addDataMap(mapData)
     }
+    else {
+      enableCheckbox()
+    }
 
   }
   else {
@@ -404,6 +407,9 @@ function checkChecked() {
       layer1.removeLayer(gj)
       gj.clearLayers()
       addDataMap(mapData)
+    }
+    else {
+      enableCheckbox()
     }
   }
 }
@@ -423,7 +429,7 @@ function checkAll() {
       layer1.removeLayer(gj)
       gj.clearLayers()
       addDataMap(mapData)
-    });;
+    })
   }
   else {
     $('.type-check').each(function () {
