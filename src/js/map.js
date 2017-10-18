@@ -568,19 +568,11 @@ $(document).ready(function () {
     }, 250)
   }, 500);
 
-<<<<<<< HEAD
   if (!visited) {
     $('.pop-up').addClass('pop-visi')
   }
 
   $('.closed').on('click', function () {
-=======
-  if(!visited) {
-    $('.pop-up').addClass('pop-visi')
-  }
-
-  $('.closed').on('click', function() {
->>>>>>> 9f921ad2ef6721410d036507460dd0494348d4d3
     $(this).parent().addClass('pop-move')
   })
 });
