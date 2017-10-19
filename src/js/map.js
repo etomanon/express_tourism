@@ -211,59 +211,63 @@ var notIncluded = ['ratedMe', 'ratedOnly', 'guest_house', 'information', 'hotel'
 var typeArray = ['artwork', 'attraction', 'picnic_site', 'theme_park', 'viewpoint', 'yes', 'hunting_lodge', 'gallery', 'zoo', 'wilderness_hut', 'museum']
 // Add JSON to map
 function addDataMap(mapData) {
-  gj = L.geoJson(mapData, {
-    pointToLayer: function (feature, latlng) {
-      if (typeArray.indexOf(feature.properties.f4) > -1) {
-        return getIcon(latlng, 'images/' + feature.properties.f4 + '.png')
+    let condition
+    if (layer1 === undefined) {
+        condition = true
+    }
+    else {
+      condition = layer1.getLayers().length == 0
+    }
+    
+    let checkForEmpty = setInterval(function () {
+      if (condition) {
+        gj = L.geoJson(mapData, {
+          pointToLayer: function (feature, latlng) {
+            if (typeArray.indexOf(feature.properties.f4) > -1) {
+              return getIcon(latlng, 'images/' + feature.properties.f4 + '.png')
+            }
+            else {
+              return getIcon(latlng, 'images/yes.png')
+            }
+  
+          },
+          filter: function (feature, layer) {
+            if (ratedOnly && feature.properties.f5 == null) { return false }
+            else if (notIncluded.indexOf(feature.properties.f4) > -1) { return false }
+            else if (ratedOnly && feature.properties.f5 == true) { return true }
+            else if (ratedMe && feature.properties.f5 == true) { return false }
+            else if (typeArray.indexOf(feature.properties.f4) > -1) { return true }
+            else { return false }
+          }
+  
+        });
+        if (gj.getBounds().isValid()) {
+          if (!(map.getBounds().intersects(gj.getBounds()))) {
+            map.fitBounds(gj.getBounds())
+          }
+        }
+        layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true });
+        layer1.addLayers(gj);
+        map.addLayer(layer1);
+        enableCheckbox()
+        map.on('move', onMove)
+  
+        layer1.on('click', function (e) {
+  
+          map.setView([e.latlng.lat, e.latlng.lng], map.getZoom());
+          $(".menu-left .menu-wrapper").empty()
+          $(".menu-left .menu-wrapper").append("<h3>" + getName(e.layer.feature.properties.f3) + "</h3><hr><h4>" + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'>0</span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
+          ratingF()
+          $("#map").addClass('map-move-right')
+          $(".menu-left").addClass('menu-active')
+  
+          L.DomEvent.stop(e);
+  
+        })
+  
+        clearInterval(checkForEmpty)
       }
-      else {
-        return getIcon(latlng, 'images/yes.png')
-      }
-
-    },
-    filter: function (feature, layer) {
-      if (ratedOnly && feature.properties.f5 == null) { return false }
-      else if (notIncluded.indexOf(feature.properties.f4) > -1) { return false }
-      else if (ratedOnly && feature.properties.f5 == true) { return true }
-      else if (ratedMe && feature.properties.f5 == true) { return false }
-      else if (typeArray.indexOf(feature.properties.f4) > -1) { return true }
-      else { return false }
-    }
-
-  });
-  if (gj.getBounds().isValid()) {
-    if (!(map.getBounds().intersects(gj.getBounds()))) {
-      map.fitBounds(gj.getBounds())
-    }
-  }
-  layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true });
-  let checkForEmpty = setInterval(function () {
-    if (layer1.getLayers().length == 0) {
-      layer1.addLayers(gj);
-      map.addLayer(layer1);
-      enableCheckbox()
-      map.on('move', onMove)
-
-      layer1.on('click', function (e) {
-
-        map.setView([e.latlng.lat, e.latlng.lng], map.getZoom());
-        $(".menu-left .menu-wrapper").empty()
-        $(".menu-left .menu-wrapper").append("<h3>" + getName(e.layer.feature.properties.f3) + "</h3><hr><h4>" + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'>0</span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
-        ratingF()
-        $("#map").addClass('map-move-right')
-        $(".menu-left").addClass('menu-active')
-
-        L.DomEvent.stop(e);
-
-      })
-
-      clearInterval(checkForEmpty)
-    }
-  }, 100);
-
-
-
-
+    }, 100);
 }
 
 function zoomIn(lat, lng) {
