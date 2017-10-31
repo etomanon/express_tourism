@@ -1,5 +1,5 @@
 var mapData
-let layer1
+//let layer1
 
 var nameArray2 = ['Artwork', 'Attraction', 'Picnic site', 'Theme park', 'Viewpoint', 'Hunting lodge', 'Gallery', 'Zoo', 'Wilderness hut', 'Museum', 'Other']
 var typeArray2 = ['artwork', 'attraction', 'picnic_site', 'theme_park', 'viewpoint', 'hunting_lodge', 'gallery', 'zoo', 'wilderness_hut', 'museum', 'yes']
@@ -51,41 +51,33 @@ var map = L.map('map', {
   maxZoom: 18
 });
 
+function capital(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+var baseLayers = {}
+var bases = ['streets','light','dark','streets-satellite','outdoors','run-bike-hike','high-contrast','pirates','comic','pencil','wheatpaste','emerald','streets-basic']
+for(let i = 0; i <= bases.length - 1; i++) {
+  
+
+  baseLayers[capital(bases[i])] = L.tileLayer('https://api.mapbox.com/v4/mapbox.' + bases[i] + '/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZXRvbWFub24iLCJhIjoiY2o4dDYyOXFnMGl6MzJxcDAxcmpuenYxdCJ9.TBlWfbR9wNimqgd8uZcNVQ', {
+    attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="https://www.mapbox.com">&copy; Mapbox</a>',
+    subdomains: 'abc',
+    maxZoom: 20
+  });
+}
 
 
-// var carto1 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-//   attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="http://carto.com/attributions">&copy; Carto</a>',
-//   subdomains: 'abcd',
-//   maxZoom: 19
-// });
 
-// var carto2 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
-//   attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="http://carto.com/attributions">&copy; Carto</a>',
-//   subdomains: 'abcd',
-//   maxZoom: 19
-// });
-
-
-var carto1 = L.tileLayer('https://api.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZXRvbWFub24iLCJhIjoiY2o4dDYyOXFnMGl6MzJxcDAxcmpuenYxdCJ9.TBlWfbR9wNimqgd8uZcNVQ', {
-  attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="https://www.mapbox.com">&copy; Mapbox</a>',
-  subdomains: 'abc',
-  maxZoom: 20
-});
-
-var carto2 = L.tileLayer('https://api.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZXRvbWFub24iLCJhIjoiY2o4dDYyOXFnMGl6MzJxcDAxcmpuenYxdCJ9.TBlWfbR9wNimqgd8uZcNVQ', {
-  attribution: '<a target="_blank" href="http://www.openstreetmap.org/copyright">&copy; OpenStreetMap</a> | <a target="_blank" href="https://www.mapbox.com">&copy; Mapbox</a>',
-  subdomains: 'abc',
-  maxZoom: 20
-});
-
-var baseLayers = {
-  "Light Mapbox": carto1,
-  "Dark Mapbox": carto2
-};
+// var baseLayers = {
+//   "Light Mapbox": carto1,
+//   "Dark Mapbox": carto2,
+//   "Streets Mapbox": carto3
+// };
 
 L.control.layers(baseLayers, null, { position: 'topleft' }).addTo(map);
 
-carto1.addTo(map)
+baseLayers[capital(bases[0])].addTo(map)
 
 map.setView({
   lat: 50.0755,
@@ -106,7 +98,7 @@ map.addControl(searchControl);
 var locateMe = L.Control.extend({
 
   options: {
-    position: 'bottomleft'
+    position: 'bottomright'
   },
 
   onAdd: function (map) {
@@ -138,7 +130,7 @@ function locateMe1() {
 var extent = L.Control.extend({
 
   options: {
-    position: 'bottomleft'
+    position: 'bottomright'
   },
 
   onAdd: function (map) {
@@ -204,71 +196,121 @@ function error(err) {
 
 navigator.geolocation.getCurrentPosition(found, error, geoOptions);
 
+var firstAdd = true
+var adding = false
+
 var gj
 var ratedMe = false
 var ratedOnly = false
 var notIncluded = ['ratedMe', 'ratedOnly', 'guest_house', 'information', 'hotel', 'hostel', 'motel', 'chalet', 'caravan_site', 'camp_site', 'apartment', 'alpine_hut']
 var typeArray = ['artwork', 'attraction', 'picnic_site', 'theme_park', 'viewpoint', 'yes', 'hunting_lodge', 'gallery', 'zoo', 'wilderness_hut', 'museum']
+var checkForEmpty
+var addingClusters
 // Add JSON to map
 function addDataMap(mapData) {
-    let condition
-    if (layer1 === undefined) {
-        condition = true
+  if (adding) {
+    return
+  }
+
+  let condition
+  if (layer1 === undefined) {
+    condition = 'true'
+  }
+  else {
+    condition = 'layer1.getLayers().length == 0'
+  }
+
+  checkForEmpty = setInterval(function () {
+    if (adding) {
+      return
     }
-    else {
-      condition = layer1.getLayers().length == 0
-    }
-    
-    let checkForEmpty = setInterval(function () {
-      if (condition) {
-        gj = L.geoJson(mapData, {
-          pointToLayer: function (feature, latlng) {
-            if (typeArray.indexOf(feature.properties.f4) > -1) {
-              return getIcon(latlng, 'images/' + feature.properties.f4 + '.png')
-            }
-            else {
-              return getIcon(latlng, 'images/yes.png')
-            }
-  
-          },
-          filter: function (feature, layer) {
-            if (ratedOnly && feature.properties.f5 == null) { return false }
-            else if (notIncluded.indexOf(feature.properties.f4) > -1) { return false }
-            else if (ratedOnly && feature.properties.f5 == true) { return true }
-            else if (ratedMe && feature.properties.f5 == true) { return false }
-            else if (typeArray.indexOf(feature.properties.f4) > -1) { return true }
-            else { return false }
+    if (eval(condition)) {
+      
+      adding = true
+      gj = L.geoJson(mapData, {
+        pointToLayer: function (feature, latlng) {
+          if (typeArray.indexOf(feature.properties.f4) > -1) {
+            return getIcon(latlng, 'images/' + feature.properties.f4 + '.png')
           }
-  
-        });
-        if (gj.getBounds().isValid()) {
-          if (!(map.getBounds().intersects(gj.getBounds()))) {
-            map.fitBounds(gj.getBounds())
+          else {
+            return getIcon(latlng, 'images/yes.png')
           }
+
+        },
+        filter: function (feature, layer) {
+          if (ratedOnly && feature.properties.f5 == null) { return false }
+          else if (notIncluded.indexOf(feature.properties.f4) > -1) { return false }
+          else if (ratedOnly && feature.properties.f5 == true) { return true }
+          else if (ratedMe && feature.properties.f5 == true) { return false }
+          else if (typeArray.indexOf(feature.properties.f4) > -1) { return true }
+          else { return false }
         }
-        layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true });
-        layer1.addLayers(gj);
-        map.addLayer(layer1);
-        enableCheckbox()
-        map.on('move', onMove)
-  
-        layer1.on('click', function (e) {
-  
-          map.setView([e.latlng.lat, e.latlng.lng], map.getZoom());
-          $(".menu-left .menu-wrapper").empty()
-          $(".menu-left .menu-wrapper").append("<h3>" + getName(e.layer.feature.properties.f3) + "</h3><hr><h4>" + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'>0</span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
-          ratingF()
-          $("#map").addClass('map-move-right')
-          $(".menu-left").addClass('menu-active')
-  
-          L.DomEvent.stop(e);
-  
-        })
-  
-        clearInterval(checkForEmpty)
+
+      });
+      if (gj.getBounds().isValid()) {
+        if (!(map.getBounds().intersects(gj.getBounds()))) {
+          map.fitBounds(gj.getBounds())
+        }
       }
-    }, 100);
+      addingClusters = true
+      //layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true, chunkProgress: checkProgress });
+      if (firstAdd) {
+        firstAdd = false
+        map.addLayer(layer1)
+        layer1.addLayers(gj);
+      }
+      else {
+        //map.addLayer(layer1)
+        layer1.addLayers(gj);
+      }
+
+
+
+
+
+
+    }
+
+    else {
+      layer1.clearLayers()
+      gj.clearLayers()
+    }
+  }, 100);
 }
+
+function checkProgress(processed, total) {
+  if (processed === total && addingClusters) {
+    addingClusters = false
+    // all markers added
+
+
+      adding = false
+      enableCheckbox()
+      map.on('move', onMove)
+      map.fire('move')
+      $(".loading").addClass('loading-hide')
+      $('.load-new').css({ 'zIndex': '9999' })
+    clearInterval(checkForEmpty)
+
+  }
+}
+
+var layer1 = L.markerClusterGroup({ showCoverageOnHover: true, chunkedLoading: true, chunkProgress: checkProgress });
+
+layer1.on('click', function (e) {
+
+  L.DomEvent.stop(e);
+  map.setView([e.latlng.lat, e.latlng.lng], map.getZoom());
+  $(".menu-left .menu-wrapper").empty()
+  $(".menu-left .menu-wrapper").append("<h3>" + getName(e.layer.feature.properties.f3) + "</h3><hr><h4>" + getType(e.layer.feature.properties.f4) + "</h4><br><h3 style='margin: auto; text-align: center'>CURRENT RATING (<span class='numRate'>0</span>x)</h3><div style='margin: auto' class='rat' id=" + e.layer.feature.properties.f1 + "></div><span class='center-text'> " + rated(e.layer.feature.properties.f5) + "</span>" + ifName(e.layer.feature.properties.f3) + "<br><a target='_blank' href='https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + e.latlng.lat + "," + e.latlng.lng + "'>Google Street View!</a>" + ifFound(e.latlng.lat, e.latlng.lng) + "<br><span class='zoom-button' onclick='zoomIn(" + e.latlng.lat + "," + e.latlng.lng + ");'>Zoom in!</span>")
+  ratingF()
+  $("#map").addClass('map-move-right')
+  $(".menu-left").addClass('menu-active')
+
+  
+
+})
+
 
 function zoomIn(lat, lng) {
   map.setView([lat, lng], 18);
@@ -387,6 +429,7 @@ function enableCheckbox() {
 
 
 function checkChecked() {
+
   disableCheckbox()
 
   map.off('move', onMove);
@@ -395,7 +438,8 @@ function checkChecked() {
     var index = notIncluded.indexOf(pro);
     if (index > -1) {
       notIncluded.splice(index, 1);
-      layer1.removeLayer(gj)
+      //layer1.removeLayer(gj)
+      layer1.clearLayers()
       gj.clearLayers()
       addDataMap(mapData)
     }
@@ -408,7 +452,8 @@ function checkChecked() {
     var index1 = notIncluded.indexOf(pro);
     if (index1 == -1) {
       notIncluded.push(pro)
-      layer1.removeLayer(gj)
+      //layer1.removeLayer(gj)
+      layer1.clearLayers()
       gj.clearLayers()
       addDataMap(mapData)
     }
@@ -430,7 +475,8 @@ function checkAll() {
         notIncluded.splice(index, 1);
       }
     }).promise().done(function () {
-      layer1.removeLayer(gj)
+      //layer1.removeLayer(gj)
+      layer1.clearLayers()
       gj.clearLayers()
       addDataMap(mapData)
     })
@@ -444,10 +490,11 @@ function checkAll() {
         notIncluded.push(pro)
       }
     }).promise().done(function () {
-      layer1.removeLayer(gj)
+      //layer1.removeLayer(gj)
+      layer1.clearLayers()
       gj.clearLayers()
       addDataMap(mapData)
-    });;
+    });
   }
 }
 
@@ -472,6 +519,7 @@ $('#ratedOnly').click(function (event) {
 
 
 $('.load-new').on('click', function () {
+  disableCheckbox()
   $('.load-new').css({ 'zIndex': '-1' })
   map.off('move', onMove);
   $(".loading").removeClass('loading-hide')
@@ -480,9 +528,10 @@ $('.load-new').on('click', function () {
     lat: map.getCenter().lat
   };
   $.get('/data', parameters, function (data) {
-    $(".loading").addClass('loading-hide')
-    if (typeof layer1 != 'undefined') {
-      layer1.removeLayer(gj)
+    
+    if (layer1.getLayers().length != 0) {
+      //layer1.removeLayer(gj)
+      layer1.clearLayers()
     }
     if (typeof gj != 'undefined') {
       gj.clearLayers()
@@ -490,7 +539,6 @@ $('.load-new').on('click', function () {
     mapData = data
     addDataMap(mapData)
     map.fire('move')
-    $('.load-new').css({ 'zIndex': '9999' })
   })
 })
 

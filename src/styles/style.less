@@ -68,25 +68,31 @@ hr {
 
 .map-move {
     transform: translate3d(-160px, 0, 0);
-
-    .leaflet-control {
+    .leaflet-top .leaflet-control {
         transform: translate3d(160px, 0, 0);
+    }
+    .leaflet-bottom .leaflet-control {
+        transform: translate3d(-160px, 0, 0);
     }
 }
 
 .map-move-right {
     transform: translate3d(160px, 0, 0);
-
-    .leaflet-control {
+    .leaflet-top .leaflet-control {
         transform: translate3d(160px, 0, 0);
+    }
+    .leaflet-bottom .leaflet-control {
+        transform: translate3d(-160px, 0, 0);
     }
 }
 
 .map-move-right.map-move {
     transform: translate3d(0, 0, 0);
-
-    .leaflet-control {
+    .leaflet-top .leaflet-control {
         transform: translate3d(320px, 0, 0);
+    }
+    .leaflet-bottom .leaflet-control {
+        transform: translate3d(-320px, 0, 0);
     }
 }
 
@@ -364,7 +370,7 @@ hr {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     background: white;
     color: @blue;
     padding: 25px;
@@ -373,28 +379,22 @@ hr {
     border-radius: 10px;
     min-width: 270px;
     transition: .5s ease all;
-
     .inner-pop {
         position: relative;
     }
-
     h3 {
         text-align: center;
     }
-
     a {
         text-decoration: none;
         color: black;
-
         &:hover {
             color: @blue;
         }
     }
-
     p {
         text-align: center;
     }
-
     .closed {
         position: absolute;
         font-size: 22px;
@@ -417,7 +417,7 @@ hr {
 
 .pop-move {
     top: 0;
-    transform: translate(-50%,-100%);
+    transform: translate(-50%, -100%);
 }
 
 @media screen and (max-width: 640px) {
